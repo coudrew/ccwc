@@ -2,9 +2,6 @@ package ca.coudrew.ccwc
 
 import com.xenomachina.argparser.ArgParser
 import com.xenomachina.argparser.mainBody
-import com.xenomachina.argparser.SystemExitException
-import com.xenomachina.argparser.default
-import ca.coudrew.ccwc.Operations
 
 class CcwcArgsParser(parser: ArgParser) {
     val count by parser.flagging("-c", help = "count number of bytes in file")
@@ -14,14 +11,25 @@ class CcwcArgsParser(parser: ArgParser) {
     val source by parser.positional("SOURCE", help = "source filename")
 }
 
-data class CcwcArgs(val count: Boolean, val lines: Boolean, val words: Boolean, val characters: Boolean, val source: String)
+data class CcwcArgs(
+    val count: Boolean = false,
+    val lines: Boolean = false,
+    val words: Boolean = false,
+    val characters: Boolean = false,
+    val source: String
+)
+
+fun performWcOperations(ccwcArgs: CcwcArgs) {
+    val wcOperations = WcOperations(ccwcArgs)
+    val output = wcOperations.buildOutput()
+    println(output)
+}
 
 fun main(args: Array<String>) = mainBody {
     val parsedArgs = ArgParser(args).parseInto(::CcwcArgsParser)
 
     parsedArgs.run {
         val ccwcArgs = CcwcArgs(count, lines, words, characters, source)
-        val operations = Operations(ccwcArgs)
-        println(operations.buildResponse())
+        performWcOperations(ccwcArgs)
     }
 }
