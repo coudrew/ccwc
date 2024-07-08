@@ -5,7 +5,7 @@ import java.nio.file.Path
 import java.nio.file.Paths
 import java.nio.file.attribute.BasicFileAttributes
 
-class Operations(private val args: CcwcArgs) {
+class WcOperations(private val args: CcwcArgs) {
     private val fileAttributes: BasicFileAttributes
     private val filePath: Path = Paths.get(args.source)
     private var response: String = ""
@@ -21,7 +21,7 @@ class Operations(private val args: CcwcArgs) {
         return if (this.response.isNotEmpty()) "${this.response} ${func()}" else "${func()}"
     }
 
-    fun buildResponse(): String {
+    fun buildOutput(): String {
         if (args.count) {
             this.response = appendToResponse(this::getBytes)
         }
