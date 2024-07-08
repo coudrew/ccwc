@@ -5,7 +5,7 @@
 Part of John Crickett's [Coding Challenges](https://codingchallenges.fyi/challenges/challenge-wc)
 
 ### Description
-An implementation of the wc *nix command line tool built in Kotlin
+A Kotlin implementation of the wc *nix command line tool
 
 ### Completed
 * Step 1 code
