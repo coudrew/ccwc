@@ -29,7 +29,12 @@ fun main(args: Array<String>) = mainBody {
     val parsedArgs = ArgParser(args).parseInto(::CcwcArgsParser)
 
     parsedArgs.run {
-        val ccwcArgs = CcwcArgs(count, lines, words, characters, source)
+        var ccwcArgs: CcwcArgs
+        if (count.not() && lines.not() && words.not() && characters.not()) {
+            ccwcArgs = CcwcArgs(true, true, true, false, source)
+        } else {
+            ccwcArgs = CcwcArgs(count, lines, words, characters, source)
+        }
         performWcOperations(ccwcArgs)
     }
 }

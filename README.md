@@ -8,11 +8,7 @@ Part of John Crickett's [Coding Challenges](https://codingchallenges.fyi/challen
 A Kotlin implementation of the wc *nix command line tool
 
 ### Completed
-* Step 1 code
+* Step 1 - 5 code and test
 ### ToDo
-* Step 1 tests and docs
-* Step 2
-* Step 3
-* Step 4
-* Step 5
 * Final Step
+* document
