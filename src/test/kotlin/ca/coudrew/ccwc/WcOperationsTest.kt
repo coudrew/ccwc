@@ -9,12 +9,42 @@ import kotlin.io.path.pathString
 class WcOperationsTest {
     val sourcePath = Paths.get("test.txt").toAbsolutePath().pathString
     val countArgs = CcwcArgs(count = true, source = sourcePath)
+    val lineArgs = CcwcArgs(lines = true, source = sourcePath)
+    val wordArgs = CcwcArgs(words = true, source = sourcePath)
+    val charArgs = CcwcArgs(characters = true, source = sourcePath)
+
     @Test
     fun buildOutputCount() {
-        println(sourcePath)
         val wcOperations = WcOperations(countArgs)
         val actual = wcOperations.buildOutput()
-        val expected = "342190"
+        val expected = "342190 ${sourcePath}"
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun buildOutputLines() {
+        val wcOperations = WcOperations(lineArgs)
+        val actual = wcOperations.buildOutput()
+        val expected = "7145 ${sourcePath}"
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun buildOutputWords() {
+        val wcOperations = WcOperations(wordArgs)
+        val actual = wcOperations.buildOutput()
+        val expected = "58164 ${sourcePath}"
+
+        assertEquals(expected, actual)
+    }
+
+    @Test
+    fun buildOutputChars() {
+        val wcOperations = WcOperations(charArgs)
+        val actual = wcOperations.buildOutput()
+        val expected = "339292 ${sourcePath}"
 
         assertEquals(expected, actual)
     }
