@@ -30,7 +30,7 @@ fun main(args: Array<String>) = mainBody {
 
     parsedArgs.run {
         var ccwcArgs: CcwcArgs
-        if (!count && !lines && !words && !characters) {
+        if (count.not() && lines.not() && words.not() && characters.not()) {
             ccwcArgs = CcwcArgs(true, true, true, false, source)
         } else {
             ccwcArgs = CcwcArgs(count, lines, words, characters, source)

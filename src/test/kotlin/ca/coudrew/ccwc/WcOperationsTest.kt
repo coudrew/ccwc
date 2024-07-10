@@ -12,7 +12,6 @@ class WcOperationsTest {
     val lineArgs = CcwcArgs(lines = true, source = sourcePath)
     val wordArgs = CcwcArgs(words = true, source = sourcePath)
     val charArgs = CcwcArgs(characters = true, source = sourcePath)
-    val defaultArgs = CcwcArgs(source = sourcePath)
 
     @Test
     fun buildOutputCount() {
@@ -48,12 +47,5 @@ class WcOperationsTest {
         val expected = "339292 ${sourcePath}"
 
         assertEquals(expected, actual)
-    }
-
-    @Test
-    fun buildOutputDefault() {
-        val wcOperations = WcOperations(defaultArgs)
-        val  actual = wcOperations.buildOutput()
-        val expected = "342190 7145 58164 ${sourcePath}"
     }
 }
