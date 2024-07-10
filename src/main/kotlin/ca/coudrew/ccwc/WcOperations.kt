@@ -4,17 +4,47 @@ import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
 import java.nio.file.attribute.BasicFileAttributes
+import java.util.regex.Pattern
 
 class WcOperations(private val args: CcwcArgs) {
-    private val fileAttributes: BasicFileAttributes
     private val filePath: Path = Paths.get(args.source)
     private var response: String = ""
-    init {
-        fileAttributes = Files.readAttributes(filePath, BasicFileAttributes::class.java)
+
+    private fun getByteCount(): Long {
+        var fileSize: Long = 0
+        if (Files.exists(filePath)) {
+            fileSize = Files.size(filePath)
+        }
+        return fileSize
     }
 
-    private fun getBytes(): Long {
-        return fileAttributes.size()
+    private fun getLineCount(): Long {
+        var lineCount: Long = 0
+        if (Files.exists(filePath)) {
+            lineCount = Files.readAllLines(filePath).size.toLong()
+        }
+        return lineCount
+    }
+
+    private fun getWordCount(): Long {
+        var wordCount: Long = 0
+        if (Files.exists(filePath)) {
+            val file: String = Files.readAllLines(filePath).joinToString(separator = " ")
+            val wordsList: List<String> = file.split(Regex("\\s+")).filter { it.isNotBlank() }
+            wordCount = wordsList.size.toLong()
+        }
+        return wordCount
+    }
+
+    private fun getCharCount(): Long {
+        var charCount: Long = 0
+        if (Files.exists(filePath)) {
+            val bufferedReader = Files.newBufferedReader(filePath);
+            while (bufferedReader.read() != -1) {
+                charCount++
+            }
+        }
+        return charCount
     }
 
     private fun appendToResponse(func: () -> Long): String {
@@ -23,8 +53,17 @@ class WcOperations(private val args: CcwcArgs) {
 
     fun buildOutput(): String {
         if (args.count) {
-            this.response = appendToResponse(this::getBytes)
+            this.response = appendToResponse(this::getByteCount)
         }
-        return this.response
+        if (args.lines) {
+            this.response = appendToResponse(this::getLineCount)
+        }
+        if (args.words) {
+            this.response = appendToResponse(this::getWordCount)
+        }
+        if (args.characters) {
+            this.response = appendToResponse(this::getCharCount)
+        }
+        return "${this.response} ${args.source}"
     }
 }
