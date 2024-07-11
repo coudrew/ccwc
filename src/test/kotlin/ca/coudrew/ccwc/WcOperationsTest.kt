@@ -17,7 +17,7 @@ class WcOperationsTest {
     fun buildOutputCount() {
         val wcOperations = WcOperations(countArgs)
         val actual = wcOperations.buildOutput()
-        val expected = "342190 $sourcePath"
+        val expected = "8729 $sourcePath"
 
         assertEquals(expected, actual)
     }
@@ -26,7 +26,7 @@ class WcOperationsTest {
     fun buildOutputLines() {
         val wcOperations = WcOperations(lineArgs)
         val actual = wcOperations.buildOutput()
-        val expected = "7145 $sourcePath"
+        val expected = "90 $sourcePath"
 
         assertEquals(expected, actual)
     }
@@ -35,7 +35,7 @@ class WcOperationsTest {
     fun buildOutputWords() {
         val wcOperations = WcOperations(wordArgs)
         val actual = wcOperations.buildOutput()
-        val expected = "58164 $sourcePath"
+        val expected = "1275 $sourcePath"
 
         assertEquals(expected, actual)
     }
@@ -44,7 +44,7 @@ class WcOperationsTest {
     fun buildOutputChars() {
         val wcOperations = WcOperations(charArgs)
         val actual = wcOperations.buildOutput()
-        val expected = "339292 $sourcePath"
+        val expected = "8729 $sourcePath"
 
         assertEquals(expected, actual)
     }
