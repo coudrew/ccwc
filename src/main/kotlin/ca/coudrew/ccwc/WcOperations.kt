@@ -3,24 +3,42 @@ package ca.coudrew.ccwc
 import java.nio.file.Files
 import java.nio.file.Path
 import java.nio.file.Paths
-import java.nio.file.attribute.BasicFileAttributes
-import java.util.regex.Pattern
+import kotlin.io.path.writeLines
 
 class WcOperations(private val args: CcwcArgs) {
     private val filePath: Path = Paths.get(args.source)
     private var response: String = ""
+    private var fileAsLines: MutableList<String> = mutableListOf()
+
+    constructor(args: CcwcArgs, inputReaderLines: MutableList<String>) : this(args) {
+        this.fileAsLines = inputReaderLines
+    }
+
+    private fun createTempFileFromLines(lines: MutableList<String>): Path {
+        val tempFile = kotlin.io.path.createTempFile("kotlinTemp", "tmp")
+        tempFile.writeLines(lines)
+        tempFile.toFile().deleteOnExit()
+
+        return tempFile
+    }
 
     private fun getByteCount(): Long {
         var fileSize: Long = 0
-        if (Files.exists(filePath)) {
-            fileSize = Files.size(filePath)
+        var path: Path = filePath
+        if (this.fileAsLines.size > 0) {
+            path = createTempFileFromLines(this.fileAsLines)
+        }
+        if (Files.exists(path)) {
+            fileSize = Files.size(path)
         }
         return fileSize
     }
 
     private fun getLineCount(): Long {
         var lineCount: Long = 0
-        if (Files.exists(filePath)) {
+        if (this.fileAsLines.size > 0) {
+            lineCount = this.fileAsLines.size.toLong()
+        } else if (Files.exists(filePath)) {
             lineCount = Files.readAllLines(filePath).size.toLong()
         }
         return lineCount
@@ -28,17 +46,24 @@ class WcOperations(private val args: CcwcArgs) {
 
     private fun getWordCount(): Long {
         var wordCount: Long = 0
-        if (Files.exists(filePath)) {
-            val file: String = Files.readAllLines(filePath).joinToString(separator = " ")
-            val wordsList: List<String> = file.split(Regex("\\s+")).filter { it.isNotBlank() }
-            wordCount = wordsList.size.toLong()
+        var file: String = ""
+
+        if (this.fileAsLines.size > 0) {
+            file = this.fileAsLines.joinToString(" ")
+        } else if (Files.exists(filePath)) {
+            file = Files.readAllLines(filePath).joinToString(separator = " ")
         }
+
+        val wordsList: List<String> = file.split(Regex("\\s+")).filter { it.isNotBlank() }
+        wordCount = wordsList.size.toLong()
+
         return wordCount
     }
 
     private fun getCharCount(): Long {
         var charCount: Long = 0
-        if (Files.exists(filePath)) {
+        val path = if (this.fileAsLines.size > 0) this.createTempFileFromLines(this.fileAsLines) else filePath
+        if (Files.exists(path)) {
             val bufferedReader = Files.newBufferedReader(filePath);
             while (bufferedReader.read() != -1) {
                 charCount++
@@ -64,6 +89,9 @@ class WcOperations(private val args: CcwcArgs) {
         if (args.characters) {
             this.response = appendToResponse(this::getCharCount)
         }
-        return "${this.response} ${args.source}"
+
+        val output = if (args.source.isNotEmpty()) "${this.response} ${args.source}" else this.response
+
+        return output
     }
 }

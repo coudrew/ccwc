@@ -1,14 +1,17 @@
 package ca.coudrew.ccwc
 
 import com.xenomachina.argparser.ArgParser
+import com.xenomachina.argparser.default
 import com.xenomachina.argparser.mainBody
+import java.io.InputStreamReader
+import java.io.BufferedReader
 
 class CcwcArgsParser(parser: ArgParser) {
     val count by parser.flagging("-c", help = "count number of bytes in file")
     val lines by parser.flagging("-l", help = "count number of lines")
     val words by parser.flagging("-w", help = "count number of words")
     val characters by parser.flagging("-m", help = "count number of characters")
-    val source by parser.positional("SOURCE", help = "source filename")
+    val source by parser.positional("SOURCE", help = "source filename").default("")
 }
 
 data class CcwcArgs(
@@ -16,8 +19,14 @@ data class CcwcArgs(
     val lines: Boolean = false,
     val words: Boolean = false,
     val characters: Boolean = false,
-    val source: String
+    val source: String = ""
 )
+
+fun performWcOperations(ccwcArgs: CcwcArgs, readerInput: MutableList<String>) {
+    val wcOperations = WcOperations(ccwcArgs, readerInput)
+    val output = wcOperations.buildOutput()
+    println(output)
+}
 
 fun performWcOperations(ccwcArgs: CcwcArgs) {
     val wcOperations = WcOperations(ccwcArgs)
@@ -27,14 +36,31 @@ fun performWcOperations(ccwcArgs: CcwcArgs) {
 
 fun main(args: Array<String>) = mainBody {
     val parsedArgs = ArgParser(args).parseInto(::CcwcArgsParser)
+    val reader = BufferedReader(InputStreamReader(System.`in`))
+    val readerInput: MutableList<String> = mutableListOf()
+
+    reader.use {
+        if (reader.ready()) {
+            var line = reader.readLine()
+            while (line != null) {
+                readerInput.add(line)
+                line = reader.readLine()
+            }
+        }
+    }
 
     parsedArgs.run {
-        var ccwcArgs: CcwcArgs
+        val ccwcArgs: CcwcArgs
         if (count.not() && lines.not() && words.not() && characters.not()) {
             ccwcArgs = CcwcArgs(true, true, true, false, source)
         } else {
             ccwcArgs = CcwcArgs(count, lines, words, characters, source)
         }
-        performWcOperations(ccwcArgs)
+
+        if (readerInput.size > 0) {
+            performWcOperations(ccwcArgs, readerInput)
+        } else {
+            performWcOperations(ccwcArgs)
+        }
     }
 }
