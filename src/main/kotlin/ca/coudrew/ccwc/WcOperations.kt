@@ -28,8 +28,12 @@ class WcOperations(private val args: CcwcArgs) {
 
     private fun getByteCount(): Long {
         var fileSize: Long = 0
-        if (Files.exists(filePath)) {
-            fileSize = Files.size(filePath)
+        var path: Path = filePath
+        if (this.fileAsLines.size > 0) {
+            path = createTempFileFromLines(this.fileAsLines)
+        }
+        if (Files.exists(path)) {
+            fileSize = Files.size(path)
         }
         return fileSize
     }

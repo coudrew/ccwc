@@ -39,13 +39,15 @@ fun main(args: Array<String>) = mainBody {
     val reader = BufferedReader(InputStreamReader(System.`in`))
     val readerInput: MutableList<String> = mutableListOf()
 
-//    reader.use {
-        var line = reader.readLine()
-        while (line != null) {
-            readerInput.add(line)
-            line = reader.readLine()
+    reader.use {
+        if (reader.ready()) {
+            var line = reader.readLine()
+            while (line != null) {
+                readerInput.add(line)
+                line = reader.readLine()
+            }
         }
-//    }
+    }
 
     parsedArgs.run {
         val ccwcArgs: CcwcArgs
