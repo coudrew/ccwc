@@ -22,18 +22,6 @@ data class CcwcArgs(
     val source: String = ""
 )
 
-fun performWcOperations(ccwcArgs: CcwcArgs, readerInput: MutableList<String>) {
-    val wcOperations = WcOperations(ccwcArgs, readerInput)
-    val output = wcOperations.buildOutput()
-    println(output)
-}
-
-fun performWcOperations(ccwcArgs: CcwcArgs) {
-    val wcOperations = WcOperations(ccwcArgs)
-    val output = wcOperations.buildOutput()
-    println(output)
-}
-
 fun main(args: Array<String>) = mainBody {
     val parsedArgs = ArgParser(args).parseInto(::CcwcArgsParser)
     val reader = BufferedReader(InputStreamReader(System.`in`))
@@ -50,17 +38,15 @@ fun main(args: Array<String>) = mainBody {
     }
 
     parsedArgs.run {
-        val ccwcArgs: CcwcArgs
-        if (count.not() && lines.not() && words.not() && characters.not()) {
-            ccwcArgs = CcwcArgs(true, true, true, false, source)
+        val ccwcArgs: CcwcArgs = if (count.not() && lines.not() && words.not() && characters.not()) {
+            CcwcArgs(true, true, true, false, source)
         } else {
-            ccwcArgs = CcwcArgs(count, lines, words, characters, source)
+            CcwcArgs(count, lines, words, characters, source)
         }
 
-        if (readerInput.size > 0) {
-            performWcOperations(ccwcArgs, readerInput)
-        } else {
-            performWcOperations(ccwcArgs)
-        }
+        val wcOperations = if (readerInput.size > 0) WcOperations(ccwcArgs, readerInput) else WcOperations(ccwcArgs)
+        val output = wcOperations.buildOutput()
+
+        println(output)
     }
 }

@@ -62,15 +62,18 @@ class WcOperations(private val args: CcwcArgs) {
     }
 
     fun buildOutput(): String {
-        if (args.count) {
-            this.response = appendToResponse(this::getByteCount)
-        }
         if (args.lines) {
             this.response = appendToResponse(this::getLineCount)
         }
+
         if (args.words) {
             this.response = appendToResponse(this::getWordCount)
         }
+
+        if (args.count) {
+            this.response = appendToResponse(this::getByteCount)
+        }
+
         if (args.characters) {
             this.response = appendToResponse(this::getCharCount)
         }
