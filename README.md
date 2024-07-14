@@ -21,8 +21,7 @@ A Kotlin implementation of the wc Linux command line tool
     git clone https://gitlab.com/coudrew/ccwc.git
     cd ccwc
     ```
-2. **Build the project**
-    Run the gradle build step from Intellij, or from the terminal run:
+2. **Build the project**: Run the gradle build step from Intellij, or from the terminal run:
     ```sh
     ./gradlew build
     ```
@@ -41,8 +40,8 @@ The tool can be used similarly to the standard `wc` command:
 cat [FILE] | ./ccwc
 ```
 ### Options
-    * -l: Print the line count
-    * -w: Print the word count
-    * -c: Print the byte count
-    * -m: Print the character count
-    * -h: Display help information
+* -l: Print the line count
+* -w: Print the word count
+* -c: Print the byte count
+* -m: Print the character count
+* -h: Display help information
