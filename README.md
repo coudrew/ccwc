@@ -25,8 +25,6 @@ A Kotlin implementation of the wc Linux command line tool
     ./gradlew build
     ```
 
-Also available pre-built from the [Artifacts](https://gitlab.com/coudrew/ccwc/-/artifacts) page
-
 ## Usage
 
 The tool can be used similarly to the standard `wc` command:
