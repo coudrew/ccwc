@@ -1,5 +1,4 @@
 # Build Your Own `wc` Tool Coding Challenge
-![GitLab CI status](https://gitlab.com/coudrew/ccwc/badges/release/pipeline.svg)
 
 Part of John Crickett's [Coding Challenges](https://codingchallenges.fyi/challenges/challenge-wc)
 
@@ -18,7 +17,7 @@ A Kotlin implementation of the wc Linux command line tool
 1. **Clone the repository**:
 
     ```sh
-    git clone https://gitlab.com/coudrew/ccwc.git
+    git clone https://github.com/coudrew/ccwc.git
     cd ccwc
     ```
 2. **Build the project**: Run the gradle build step from Intellij, or from the terminal run:
